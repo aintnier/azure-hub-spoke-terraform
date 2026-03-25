@@ -6,8 +6,6 @@ A professional portfolio project demonstrating the evolution of **Hub-and-Spoke 
 
 All infrastructure is provisioned via **Terraform**, automated through **GitHub Actions CI/CD**, and designed to be **ephemeral** (~€5 per test session).
 
-> 📄 See [PRD.md](PRD.md) for the full Product Requirements Document.
-
 ---
 
 ## Architecture — 3 Progressive Layers
@@ -69,7 +67,6 @@ Authentication uses **OIDC** (Federated Identity Credential) — no long-lived s
 ├── layer1-manual-peering/    # VNet Peering + Firewall + UDR + VMs
 ├── layer2-avnm/              # AVNM dynamic groups + Firewall + VMs
 ├── layer3-vwan/              # Virtual WAN + Secured Hub + VMs
-├── PRD.md                    # Product Requirements Document
 └── README.md                 # This file
 ```
 
