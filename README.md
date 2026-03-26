@@ -47,6 +47,60 @@ All layers share the same logical pattern: spoke-to-spoke traffic is routed thro
 
 ---
 
+## Phase 0: Project Foundation (OIDC & State)
+
+Before deploying the progressive network layers, a robust, enterprise-grade Azure Foundation was established via the Azure CLI.
+
+### 1. Zero-Trust Authentication (OIDC)
+Instead of relying on legacy, long-lived client secrets, this project exclusively uses **OpenID Connect (OIDC)** for GitHub Actions to authenticate to Azure.
+- An Entra ID App Registration (`github-actions-hub-spoke`) was created with a Service Principal assigned the **Contributor** role.
+- Federated credentials were created for both the `main` branch (for CD Deployments) and `pull_request` events (for CI validation).
+
+```bash
+# Creating the App Registration and assigning Subscription Contributor role
+az ad app create --display-name "github-actions-hub-spoke"
+az ad sp create --id <APP_ID>
+az role assignment create --assignee <SP_ID> --role Contributor --scope /subscriptions/<SUB_ID>
+
+# Generating the zero-trust OIDC Federated Credential for the main branch
+az ad app federated-credential create \
+  --id <APP_ID> \
+  --parameters '{"name":"github-actions-main","issuer":"https://token.actions.githubusercontent.com","subject":"repo:aintnier/azure-hub-spoke-terraform:ref:refs/heads/main","audiences":["api://AzureADTokenExchange"]}'
+```
+
+![App Registration](docs/imgs/setup/01-app-registration-overview.png)
+<br>
+![OIDC Federated Credentials](docs/imgs/setup/02-federated-credentials.png)
+
+### 2. Centralized Terraform State
+A strictly isolated Azure Storage Account (`tsterraformstate26032026`) tracks the state for all 3 networking layers independently via separate Blob Containers: `layer1-manual-peering`, `layer2-avnm`, and `layer3-vwan`.
+
+```bash
+# Provisioning the dedicated Storage Account and Containers
+az group create --name rg-terraform-state --location westeurope
+
+az storage account create \
+  --name tsterraformstate26032026 \
+  --resource-group rg-terraform-state \
+  --location westeurope \
+  --sku Standard_LRS
+
+az storage container create --name layer1-manual-peering --account-name tsterraformstate26032026
+az storage container create --name layer2-avnm --account-name tsterraformstate26032026
+az storage container create --name layer3-vwan --account-name tsterraformstate26032026
+```
+
+![Storage Containers](docs/imgs/setup/06-storage-containers.png)
+
+### 3. Continuous Integration (CI)
+The project enforces strict code quality through a GitHub Actions matrix workflow ([`ci.yml`](.github/workflows/ci.yml)). On every push to `main` (or PR), it automatically runs `terraform fmt`, `init`, and `validate` across all three architecture layers in parallel—without needing to contact Azure State.
+
+![CI Success](docs/imgs/setup/08-github-actions-ci-success.png)
+<br>
+![Terraform Validate Logs](docs/imgs/setup/09-github-actions-tf-validate-logs.png)
+
+---
+
 ## Quick Start
 
 ### Prerequisites
