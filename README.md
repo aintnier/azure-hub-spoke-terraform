@@ -1,28 +1,48 @@
-# Azure Hub-and-Spoke Networking — Terraform Portfolio
+# Azure Hub-and-Spoke Topologies - Azure & Terraform Project
 
 [![Terraform CI](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/ci.yml/badge.svg)](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/ci.yml)
 
-A professional portfolio project demonstrating the evolution of **Hub-and-Spoke network topologies** on Microsoft Azure — from manual VNet Peering to policy-driven automation with AVNM to fully managed SD-WAN with Virtual WAN.
+A portfolio project demonstrating the evolution of **Hub-and-Spoke network topologies** on Microsoft Azure - from manual VNet Peering to policy-driven automation with AVNM to fully managed SD-WAN with Virtual WAN.
 
-All infrastructure is provisioned via **Terraform**, automated through **GitHub Actions CI/CD**, and designed to be **ephemeral** (~€5 per test session).
+All infrastructure is provisioned via **Terraform**, automated through **GitHub Actions CI/CD pipelines**.
 
 ---
 
-## Architecture — 3 Progressive Layers
+## Architecture - 3 Progressive Layers
 
 | Layer | Technology | Key Concept |
 |-------|-----------|------------|
 | [Layer 1](layer1-manual-peering/) | Manual VNet Peering | Traditional approach, full control |
-| [Layer 2](layer2-avnm/) | Azure Virtual Network Manager | Tag-based dynamic membership |
+| [Layer 2](layer2-avnm/) | Azure Virtual Network Manager | Tag-based dynamic network groups |
 | [Layer 3](layer3-vwan/) | Azure Virtual WAN | Fully managed hub, Routing Intent |
 
 All layers share the same logical pattern: spoke-to-spoke traffic is routed through a central **Azure Firewall (Standard)** acting as the NVA.
 
 ```
-         Spoke 1 ──── peering/connection ───── Hub (Firewall) ───── peering/connection ──── Spoke 2
-           VM                                     │                                          VM
-                                              UDR / Routing Intent
-                                          forces all traffic through FW
+                        ┌─────────────────────────────────────────┐
+                        │                 Hub VNet                │
+                        │                                         │
+                        │           ┌─────────────────┐           │
+                        │           │  Azure Firewall │           │
+                        │           │   (Standard)    │           │
+                        │           └────────┬────────┘           │
+                        │                    │                    │
+                        └────────────────────┼────────────────────┘
+                              ▲              │             ▲
+                  peering /   │        UDR / Routing       │   peering /
+                  connection  │          Intent            │   connection
+                              │     (all traffic → FW)     │
+               ┌──────────────┴──┐                ┌────────┴─────────┐
+               │   Spoke 1 VNet  │                │   Spoke 2 VNet   │
+               │                 │                │                  │
+               │   ┌──────────┐  │                │  ┌──────────┐    │
+               │   │  VM 1    │  │                │  │  VM 2    │    │
+               │   └──────────┘  │                │  └──────────┘    │
+               └─────────────────┘                └──────────────────┘
+
+         Spoke 1 ◄──── all traffic ────► Firewall ◄──── all traffic ────► Spoke 2
+                                            │
+                                    Internet egress
 ```
 
 ---
@@ -56,14 +76,14 @@ terraform destroy -auto-approve
 | `deploy-layerN.yml` | Manual | `terraform apply` |
 | `destroy-layerN.yml` | Manual | `terraform destroy` |
 
-Authentication uses **OIDC** (Federated Identity Credential) — no long-lived secrets.
+Authentication uses **OIDC** (Federated Identity Credential) - no long-lived secrets.
 
 ---
 
 ## Repository Structure
 
 ```
-├── .github/workflows/       # CI/CD pipelines (7 workflows)
+├── .github/workflows/        # CI/CD pipelines (7 workflows)
 ├── layer1-manual-peering/    # VNet Peering + Firewall + UDR + VMs
 ├── layer2-avnm/              # AVNM dynamic groups + Firewall + VMs
 ├── layer3-vwan/              # Virtual WAN + Secured Hub + VMs

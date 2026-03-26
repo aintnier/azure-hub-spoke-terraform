@@ -10,7 +10,7 @@ terraform {
 
   backend "azurerm" {
     resource_group_name  = "rg-terraform-state"
-    storage_account_name = "stterraformstate"
+    storage_account_name = "tsterraformstate26032026"
     container_name       = "layer1-manual-peering"
     key                  = "terraform.tfstate"
   }

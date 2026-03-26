@@ -65,6 +65,28 @@ resource "azurerm_firewall_policy_rule_collection_group" "hub" {
   }
 
   network_rule_collection {
+    name     = "allow-spoke-to-internet"
+    priority = 150
+    action   = "Allow"
+
+    rule {
+      name                  = "allow-icmp-to-internet"
+      protocols             = ["ICMP"]
+      source_addresses      = concat(var.spoke1_vnet_address_space, var.spoke2_vnet_address_space)
+      destination_addresses = ["*"]
+      destination_ports     = ["*"]
+    }
+
+    rule {
+      name                  = "allow-http-https-to-internet"
+      protocols             = ["TCP"]
+      source_addresses      = concat(var.spoke1_vnet_address_space, var.spoke2_vnet_address_space)
+      destination_addresses = ["*"]
+      destination_ports     = ["80", "443"]
+    }
+  }
+
+  network_rule_collection {
     name     = "deny-all"
     priority = 200
     action   = "Deny"

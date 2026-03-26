@@ -91,3 +91,29 @@ resource "azurerm_linux_virtual_machine" "spoke2" {
     version   = "latest"
   }
 }
+
+# -----------------------------------------------------------------------------
+# Network Watcher Agent Extension — Spoke 1 VM
+# -----------------------------------------------------------------------------
+resource "azurerm_virtual_machine_extension" "spoke1_network_watcher" {
+  name                       = "NetworkWatcherAgentLinux"
+  virtual_machine_id         = azurerm_linux_virtual_machine.spoke1.id
+  publisher                  = "Microsoft.Azure.NetworkWatcher"
+  type                       = "NetworkWatcherAgentLinux"
+  type_handler_version       = "1.4"
+  auto_upgrade_minor_version = true
+  tags                       = var.tags
+}
+
+# -----------------------------------------------------------------------------
+# Network Watcher Agent Extension — Spoke 2 VM
+# -----------------------------------------------------------------------------
+resource "azurerm_virtual_machine_extension" "spoke2_network_watcher" {
+  name                       = "NetworkWatcherAgentLinux"
+  virtual_machine_id         = azurerm_linux_virtual_machine.spoke2.id
+  publisher                  = "Microsoft.Azure.NetworkWatcher"
+  type                       = "NetworkWatcherAgentLinux"
+  type_handler_version       = "1.4"
+  auto_upgrade_minor_version = true
+  tags                       = var.tags
+}

@@ -5,7 +5,7 @@ resource "azurerm_route_table" "spoke1" {
   name                          = "rt-spoke1-${var.environment}"
   location                      = azurerm_resource_group.layer1.location
   resource_group_name           = azurerm_resource_group.layer1.name
-  disable_bgp_route_propagation = true
+  bgp_route_propagation_enabled = false
   tags                          = var.tags
 
   route {
@@ -28,7 +28,7 @@ resource "azurerm_route_table" "spoke2" {
   name                          = "rt-spoke2-${var.environment}"
   location                      = azurerm_resource_group.layer1.location
   resource_group_name           = azurerm_resource_group.layer1.name
-  disable_bgp_route_propagation = true
+  bgp_route_propagation_enabled = false
   tags                          = var.tags
 
   route {

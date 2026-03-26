@@ -49,3 +49,11 @@ output "log_analytics_workspace_id" {
   description = "Resource ID of the Log Analytics Workspace"
   value       = azurerm_log_analytics_workspace.hub.id
 }
+
+# -----------------------------------------------------------------------------
+# Bastion
+# -----------------------------------------------------------------------------
+output "bastion_name" {
+  description = "Name of the Azure Bastion host (use in Azure Portal to SSH into VMs)"
+  value       = azurerm_bastion_host.hub.name
+}

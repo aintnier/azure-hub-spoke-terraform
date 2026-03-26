@@ -39,6 +39,12 @@ variable "hub_firewall_subnet_prefix" {
   default     = ["10.0.0.0/26"]
 }
 
+variable "hub_bastion_subnet_prefix" {
+  description = "Address prefix for the AzureBastionSubnet (min /26)"
+  type        = list(string)
+  default     = ["10.0.1.0/26"]
+}
+
 variable "spoke1_vnet_address_space" {
   description = "Address space for Spoke 1 VNet"
   type        = list(string)
