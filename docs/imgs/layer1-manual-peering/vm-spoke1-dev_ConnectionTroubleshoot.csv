@@ -1,0 +1,18 @@
+Results
+    Test(s) ran: ,Connectivity; NSG diagnostic; Next hop; Port scanner
+    Source: ,vm-spoke1-dev
+    Destination: ,vm-spoke2-dev
+    
+Diagnostic tests
+Test,Status,Details
+Connectivity test,Reachable,Probes sent: 66; probes failed: 0; Average latency (ms): 2; minimum latency (ms): 1; maximum latency (ms): 5
+Outbound NSG diagnostic,Deny,
+Inbound NSG diagnostic,Deny,
+Next hop (from source),Success,Next hop type: Virtual Appliance; IP address: 10.0.0.4
+Destination port accessible,Reachable,
+
+Hop details
+Name,Status,IP address,Next hop,Round Trip Time,Errors
+vm-spoke1-dev,Healthy,10.1.1.4,10.0.0.0/26,,
+fw-hub-dev,Healthy,10.0.0.0/26,10.2.1.4,,
+vm-spoke2-dev,Healthy,10.2.1.4,,,
