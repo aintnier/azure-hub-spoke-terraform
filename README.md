@@ -54,7 +54,7 @@ Before deploying the progressive network layers, a robust, enterprise-grade Azur
 ### 1. Zero-Trust Authentication (OIDC)
 Instead of relying on legacy, long-lived client secrets, this project exclusively uses **OpenID Connect (OIDC)** for GitHub Actions to authenticate to Azure.
 - An Entra ID App Registration (`github-actions-hub-spoke`) was created with a Service Principal assigned the **Contributor** role.
-- Federated credentials were created for both the `main` branch (for CD Deployments) and `pull_request` events (for CI validation).
+- Federated credentials were created for the `main` branch, `pull_request` events (for CI validation), and the `production` environment (for actual deployments).
 
 ```bash
 # Creating the App Registration and assigning Subscription Contributor role
@@ -66,6 +66,11 @@ az role assignment create --assignee <SP_ID> --role Contributor --scope /subscri
 az ad app federated-credential create \
   --id <APP_ID> \
   --parameters '{"name":"github-actions-main","issuer":"https://token.actions.githubusercontent.com","subject":"repo:aintnier/azure-hub-spoke-terraform:ref:refs/heads/main","audiences":["api://AzureADTokenExchange"]}'
+
+# Generating the zero-trust OIDC Federated Credential for the production environment
+az ad app federated-credential create \
+  --id <APP_ID> \
+  --parameters '{"name":"github-actions-environment-production","issuer":"https://token.actions.githubusercontent.com","subject":"repo:aintnier/azure-hub-spoke-terraform:environment:production","audiences":["api://AzureADTokenExchange"]}'
 ```
 
 ![App Registration](docs/imgs/setup/01-app-registration-overview.png)
