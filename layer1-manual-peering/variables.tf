@@ -75,7 +75,7 @@ variable "spoke2_workload_subnet_prefix" {
 variable "vm_size" {
   description = "Size of the test virtual machines"
   type        = string
-  default     = "Standard_B2s"
+  default     = "Standard_D2s_v3"
 }
 
 variable "admin_username" {
