@@ -62,6 +62,6 @@ Desktop.ini
 *.swo
 *~
 
-# Local documentation drafts
+# Local documentation drafts & lecture notes
 docs/drafts/
 docs/lectures/
