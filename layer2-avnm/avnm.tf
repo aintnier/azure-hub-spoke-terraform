@@ -36,7 +36,7 @@ resource "azurerm_network_manager_connectivity_configuration" "hub_and_spoke" {
   applies_to_group {
     group_connectivity = "None"
     network_group_id   = azurerm_network_manager_network_group.spokes.id
-    use_hub_gateway    = true
+    use_hub_gateway    = false
   }
 
   hub {
