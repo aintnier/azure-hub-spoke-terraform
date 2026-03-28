@@ -13,7 +13,7 @@ The Terraform execution successfully provisioned the virtual networks, subnets, 
 ![Network Topology](../docs/imgs/layer1-manual-peering/topology.svg)
 *Architectural representation of the deployed Hub and Spoke topology generated via Azure Network Watcher.*
 
-![Deployed Resources](../docs/imgs/layer1-manual-peering/02-deployed-resources.png)
+![Deployed Resources](../docs/imgs/layer1-manual-peering/01-deployed-resources.png)
 *A consolidated view of all resources deployed within the initial unified Resource Group, including the Bastion Host, Log Analytics Workspace, and Route Tables.*
 
 ![VNet Peerings connected](../docs/imgs/layer1-manual-peering/03-vnet-peerings.png)
@@ -28,7 +28,7 @@ A Zero-Trust architecture requires robust validation. The routing logic was deli
 ### 3.1 Inter-Spoke Communication
 By default, Spoke VNets do not communicate with each other. I validated that the UDRs successfully intercept the traffic and route it through the Hub's Firewall.
 
-![Spoke1 to Spoke2 ICMP](../docs/imgs/layer1-manual-peering/04-ping-spoke1-to-spoke2.png)
+![Spoke1 to Spoke2 ICMP](../docs/imgs/layer1-manual-peering/05-ping-spoke1-to-spoke2.png)
 *ICMP (Ping) validation from Spoke 1 to Spoke 2 demonstrating successful transit and inspection by the central firewall.*
 
 ### 3.2 Controlled Internet Egress (SNAT)
