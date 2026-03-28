@@ -56,5 +56,6 @@ resource "azurerm_network_manager_deployment" "connectivity" {
 
   triggers = {
     configuration_ids = join(",", [azurerm_network_manager_connectivity_configuration.hub_and_spoke.id])
+    force_update      = "1"
   }
 }
