@@ -1,0 +1,18 @@
+Results
+    Test(s) ran: ,Connectivity; NSG diagnostic; Next hop; Port scanner
+    Source: ,vm-spoke1-dev
+    Destination: ,vm-spoke2-dev
+    
+Diagnostic tests
+Test,Status,Details
+Connectivity test,Reachable,Probes sent: 66; probes failed: 0; Average latency (ms): 4; minimum latency (ms): 2; maximum latency (ms): 13
+Outbound NSG diagnostic,Deny,
+Inbound NSG diagnostic,Deny,
+Next hop (from source),Success,Next hop type: Virtual Network Gateway; IP address: 10.3.0.132; Route table: Gateway Route
+Destination port accessible,Reachable,
+
+Hop details
+Name,Status,IP address,Next hop,Round Trip Time,Errors
+vm-spoke1-dev,Healthy,10.1.1.4,10.3.0.132,,
+Virtual Network Gateway,Healthy,10.3.0.132,10.2.1.4,,
+vm-spoke2-dev,Healthy,10.2.1.4,,,
