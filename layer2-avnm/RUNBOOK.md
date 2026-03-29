@@ -91,6 +91,29 @@ vm-spoke2-dev,Healthy,10.2.1.4,
 
 ---
 
+### 4.3 Idempotency and Deployment Triggers in AVNM
+
+The `triggers` block added to the `azurerm_network_manager_deployment` resource acts as a **safeguard measure to guarantee the idempotency and consistency** of Layer 2.
+
+#### Why is it necessary?
+In Azure, the **Virtual Network Manager (AVNM)** separates the definition of the configuration from its actual application ("Deployment"):
+1.  **Configuration:** Defines the Hub-and-Spoke topology (in `cc-hubandspoke`).
+2.  **Deployment:** Is the action that "publishes" that configuration to the VNets in the subscription.
+
+The problem is that Terraform, by its nature, tracks the state of resources. If you modify a parameter in the configuration, Terraform updates that resource correctly, but it might not understand that it also needs to **re-execute the deployment** to make the changes effective on Azure, because the direct arguments of the deployment (like the Network Manager ID) haven't changed.
+
+#### What does it specifically do?
+```hcl
+  triggers = {
+    configuration_ids = join(",", [azurerm_network_manager_connectivity_configuration.hub_and_spoke.id])
+  }
+```
+*   **Monitoring:** Forces Terraform to consider the `deployment` resource as "changed" whenever the connectivity configuration ID changes.
+*   **Idempotency:** If there are no changes in the configuration, the value in the `triggers` block remains identical and Terraform will do nothing (respecting the **NFR-03** requirement from the PRD).
+*   **Guaranteed execution:** If you modify something in the network logic, the `triggers` "wakes up" the deployment resource, ensuring that the publication action is sent to Azure during the same `terraform apply`.
+
+Without this block, you could end up in a situation where Terraform tells you everything is updated, but the VNets on Azure are still using an old version of the topology because the "publish command" (the deployment) was not triggered.
+
 ## 5. Engineering Lessons Learned
 
 Transitioning from declarative manual infrastructure to dynamic orchestration exposed a few architectural nuances that required proactive engineering:
