@@ -53,6 +53,20 @@ resource "azurerm_firewall_policy_rule_collection_group" "hub" {
   }
 
   network_rule_collection {
+    name     = "allow-bastion-to-spokes"
+    priority = 125
+    action   = "Allow"
+
+    rule {
+      name                  = "allow-ssh-rdp-bastion"
+      protocols             = ["TCP"]
+      source_addresses      = var.bastion_vnet_address_space
+      destination_addresses = concat(var.spoke1_vnet_address_space, var.spoke2_vnet_address_space)
+      destination_ports     = ["22", "3389"]
+    }
+  }
+
+  network_rule_collection {
     name     = "allow-spoke-to-internet"
     priority = 150
     action   = "Allow"
