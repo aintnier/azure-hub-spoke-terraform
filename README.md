@@ -1,9 +1,9 @@
 # Azure Hub-and-Spoke Topologies - Terraform & GitHub Actions
 
 [![Terraform CI](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/ci.yml/badge.svg)](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/ci.yml)
-[![Terraform CD](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer1.yml/badge.svg)](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer1.yml)
-[![Terraform CD](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer2.yml/badge.svg)](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer2.yml)
-[![Terraform CD](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer3.yml/badge.svg)](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer3.yml)
+[![Deploy Layer 1](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer1.yml/badge.svg?label=Deploy+Layer+1)](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer1.yml)
+[![Deploy Layer 2](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer2.yml/badge.svg?label=Deploy+Layer+2)](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer2.yml)
+[![Deploy Layer 3](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer3.yml/badge.svg?label=Deploy+Layer+3)](https://github.com/aintnier/azure-hub-spoke-terraform/actions/workflows/deploy-layer3.yml)
 
 [![Azure](https://img.shields.io/badge/Azure-Cloud-0078D4?logo=microsoft-azure)](https://azure.microsoft.com/)
 [![Terraform](https://img.shields.io/badge/Terraform-%3E%3D1.14-7B42BC?logo=terraform)](https://www.terraform.io/)
@@ -11,18 +11,11 @@
 
 A portfolio project implementing three **production-grade Hub-and-Spoke network architectures** on Microsoft Azure, evolving from manual VNet Peering through AVNM policy-driven automation to a fully managed Virtual WAN - each layer provisioned via **Terraform** and validated through **GitHub Actions CI/CD** with **OIDC federated authentication**.
 
-## Explore the Runbooks
-
-Each layer's full deployment session is documented in its `RUNBOOK.md` - including
-validation tests, control-plane telemetry, KQL queries, and engineering lessons learned.
-For the most complete understanding of the project, I recommend reading them in sequence.
-
 ---
 
 ## Table of Contents
 
 - [Azure Hub-and-Spoke Topologies - Terraform \& GitHub Actions](#azure-hub-and-spoke-topologies---terraform--github-actions)
-  - [Explore the Runbooks](#explore-the-runbooks)
   - [Table of Contents](#table-of-contents)
   - [Architecture Overview](#architecture-overview)
   - [Skills Demonstrated](#skills-demonstrated)
@@ -44,6 +37,7 @@ For the most complete understanding of the project, I recommend reading them in 
   - [Known Limitations](#known-limitations)
   - [Repository Structure](#repository-structure)
   - [Tech Stack](#tech-stack)
+  - [Explore the Runbooks](#explore-the-runbooks)
   - [License](#license)
 
 ---
@@ -371,6 +365,12 @@ Each layer directory contains independent Terraform state, provider configuratio
 | Observability    | Azure Network Watcher, Log Analytics, KQL  |
 
 ---
+
+## Explore the Runbooks
+
+Each layer's full deployment session is documented in its `RUNBOOK.md` - including
+validation tests, control-plane telemetry, KQL queries, and engineering lessons learned.
+For the most complete understanding of the project, I recommend reading them in sequence.
 
 ## License
 
