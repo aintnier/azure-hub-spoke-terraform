@@ -25,7 +25,7 @@ variable "tags" {
 }
 
 # -----------------------------------------------------------------------------
-# Networking — Address Spaces
+# Networking - Address Spaces
 # -----------------------------------------------------------------------------
 variable "hub_vnet_address_space" {
   description = "Address space for the Hub VNet"
@@ -70,7 +70,7 @@ variable "spoke2_workload_subnet_prefix" {
 }
 
 # -----------------------------------------------------------------------------
-# Compute — Test VMs
+# Compute - Test VMs
 # -----------------------------------------------------------------------------
 variable "vm_size" {
   description = "Size of the test virtual machines"

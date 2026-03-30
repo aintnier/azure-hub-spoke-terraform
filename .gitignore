@@ -40,7 +40,7 @@ id_rsa
 id_rsa.pub
 *.key
 
-# PRD — internal AI/IDE planning document, not part of the portfolio
+# PRD - internal AI/IDE planning document, not part of the portfolio
 PRD.md
 
 # AI assistant / IDE agent directories

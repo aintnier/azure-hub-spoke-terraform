@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Azure Bastion — Public IP
+# Azure Bastion - Public IP
 # -----------------------------------------------------------------------------
 resource "azurerm_public_ip" "bastion" {
   name                = "pip-bastion-vwan-${var.environment}"

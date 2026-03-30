@@ -11,7 +11,7 @@ resource "azurerm_log_analytics_workspace" "hub" {
 }
 
 # -----------------------------------------------------------------------------
-# Diagnostic Settings — Azure Firewall Logs
+# Diagnostic Settings - Azure Firewall Logs
 # -----------------------------------------------------------------------------
 resource "azurerm_monitor_diagnostic_setting" "firewall" {
   name                       = "diag-fw-hub-${var.environment}"

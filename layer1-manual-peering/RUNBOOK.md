@@ -11,13 +11,13 @@ I achieved native cross-network communication by establishing **Manual VNet Peer
 The Terraform execution successfully provisioned the virtual networks, subnets, internal route tables, and the required test Virtual Machines setup in `West Europe`.
 
 ![Network Topology](../docs/imgs/layer1-manual-peering/topology.svg)
-*Architectural representation of the deployed Hub and Spoke topology generated via Azure Network Watcher.*
+_Architectural representation of the deployed Hub and Spoke topology generated via Azure Network Watcher._
 
 ![Deployed Resources](../docs/imgs/layer1-manual-peering/01-deployed-resources.png)
-*A consolidated view of all resources deployed within the initial unified Resource Group, including the Bastion Host, Log Analytics Workspace, and Route Tables.*
+_A consolidated view of all resources deployed within the initial unified Resource Group, including the Bastion Host, Log Analytics Workspace, and Route Tables._
 
 ![VNet Peerings connected](../docs/imgs/layer1-manual-peering/03-vnet-peerings.png)
-*Verification of the successful peering state (`Connected`) linking the Hub to the individual Spoke VNets.*
+_Verification of the successful peering state (`Connected`) linking the Hub to the individual Spoke VNets._
 
 ---
 
@@ -26,16 +26,18 @@ The Terraform execution successfully provisioned the virtual networks, subnets, 
 A Zero-Trust architecture requires robust validation. The routing logic was deliberately overridden using **User Defined Routes (UDR)** applied to the Spoke subnets, changing the default `0.0.0.0/0` next hop to point to the Azure Firewall's private IP (`10.0.0.4`).
 
 ### 3.1 Inter-Spoke Communication
+
 By default, Spoke VNets do not communicate with each other. I validated that the UDRs successfully intercept the traffic and route it through the Hub's Firewall.
 
 ![Spoke1 to Spoke2 ICMP](../docs/imgs/layer1-manual-peering/05-ping-spoke1-to-spoke2.png)
-*ICMP (Ping) validation from Spoke 1 to Spoke 2 demonstrating successful transit and inspection by the central firewall.*
+_ICMP (Ping) validation from Spoke 1 to Spoke 2 demonstrating successful transit and inspection by the central firewall._
 
 ### 3.2 Controlled Internet Egress (SNAT)
+
 For workloads that require package updates without exposing a public footprint, outbound Internet access is heavily restricted. I tested the system's ability to gracefully Source-NAT (SNAT) TCP traffic while maintaining security.
 
 ![Spoke1 Egress cURL via Firewall](../docs/imgs/layer1-manual-peering/07-curl-internet-allowed.png)
-*Demonstrating successful HTTP/HTTPS egress via `curl`. The traffic is transparently SNATed by the Azure Firewall's Public IP, masking the internal VM addresses.*
+_Demonstrating successful HTTP/HTTPS egress via `curl`. The traffic is transparently SNATed by the Azure Firewall's Public IP, masking the internal VM addresses._
 
 ---
 
@@ -44,29 +46,33 @@ For workloads that require package updates without exposing a public footprint, 
 Modern cloud engineering relies on deep telemetry rather than manual OS-level debugging. I leveraged the **Azure Network Watcher** and **Log Analytics Workspace** to audit the network flows from the control plane.
 
 ### 4.1 Firewall Rule Evaluation (KQL)
-Azure Firewall diagnostics were shipped to a Log Analytics Workspace to provide a permanent audit trail of allowed and denied traffic. 
+
+Azure Firewall diagnostics were shipped to a Log Analytics Workspace to provide a permanent audit trail of allowed and denied traffic.
 
 ![Firewall Logs in Log Analytics](../docs/imgs/layer1-manual-peering/08-loganalytics-firewall-queries.png)
-*Executing a `Kusto Query Language (KQL)` script to explicitly filter and identify our exact testing payloads matching the Network Rules Policies.*
+_Executing a `Kusto Query Language (KQL)` script to explicitly filter and identify our exact testing payloads matching the Network Rules Policies._
 
 ### 4.2 Route and Next-Hop Auditing
+
 To definitively prove our infrastructural code functioned natively, I inspected the Azure SDN (Software Defined Networking) routing tables.
 
 ![Effective Routes User Defined](../docs/imgs/layer1-manual-peering/09-effective-routes.png)
-*The Effective Routes view of Spoke 1's Network Interface showing the active User Defined overrides.*
+_The Effective Routes view of Spoke 1's Network Interface showing the active User Defined overrides._
 
 ![Route Tables Configuration](../docs/imgs/layer1-manual-peering/02-route-tables-spoke1.png)
-*Detail of the Route Table (UDR) configured directly on the Spoke subnet effectively imposing the routing overlay.*
+_Detail of the Route Table (UDR) configured directly on the Spoke subnet effectively imposing the routing overlay._
 
 ![Next Hop routing to Virtual Appliance](../docs/imgs/layer1-manual-peering/10b-next-hop-to-spoke2.png)
-*Network Watcher's Next Hop diagnostic tool analytically proving the `Virtual Appliance` target resolution.*
+_Network Watcher's Next Hop diagnostic tool analytically proving the `Virtual Appliance` target resolution._
 
 ### 4.3 Automated End-to-End Troubleshooting
+
 Using the Connection Troubleshoot feature, I injected synthetic probes to validate TCP Port 22 connectivity between the spokes across the Hub firewall without establishing an SSH session manually.
 
 ![Connection Troubleshoot TCP 22 Results](../docs/imgs/layer1-manual-peering/12b-connection-troubleshoot-results.png)
 
 **Data-Driven Validation extracted from diagnostic results (CSV):**
+
 ```csv
 Test,Status,Details
 Connectivity test,Reachable,Probes sent: 66; probes failed: 0; Average latency (ms): 2; minimum latency (ms): 1; maximum latency (ms): 5

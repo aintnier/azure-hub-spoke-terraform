@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Route Table — Spoke 1
+# Route Table - Spoke 1
 # -----------------------------------------------------------------------------
 resource "azurerm_route_table" "spoke1" {
   name                          = "rt-spoke1-${var.environment}"
@@ -22,7 +22,7 @@ resource "azurerm_subnet_route_table_association" "spoke1" {
 }
 
 # -----------------------------------------------------------------------------
-# Route Table — Spoke 2
+# Route Table - Spoke 2
 # -----------------------------------------------------------------------------
 resource "azurerm_route_table" "spoke2" {
   name                          = "rt-spoke2-${var.environment}"

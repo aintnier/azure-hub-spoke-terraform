@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Network Interface — Spoke 1 VM
+# Network Interface - Spoke 1 VM
 # -----------------------------------------------------------------------------
 resource "azurerm_network_interface" "spoke1_vm" {
   name                = "nic-vm-spoke1-${var.environment}"
@@ -15,7 +15,7 @@ resource "azurerm_network_interface" "spoke1_vm" {
 }
 
 # -----------------------------------------------------------------------------
-# Network Interface — Spoke 2 VM
+# Network Interface - Spoke 2 VM
 # -----------------------------------------------------------------------------
 resource "azurerm_network_interface" "spoke2_vm" {
   name                = "nic-vm-spoke2-${var.environment}"
@@ -31,7 +31,7 @@ resource "azurerm_network_interface" "spoke2_vm" {
 }
 
 # -----------------------------------------------------------------------------
-# Linux VM — Spoke 1 (Connectivity Test)
+# Linux VM - Spoke 1 (Connectivity Test)
 # -----------------------------------------------------------------------------
 resource "azurerm_linux_virtual_machine" "spoke1" {
   name                            = "vm-spoke1-${var.environment}"
@@ -62,7 +62,7 @@ resource "azurerm_linux_virtual_machine" "spoke1" {
 }
 
 # -----------------------------------------------------------------------------
-# Linux VM — Spoke 2 (Connectivity Test)
+# Linux VM - Spoke 2 (Connectivity Test)
 # -----------------------------------------------------------------------------
 resource "azurerm_linux_virtual_machine" "spoke2" {
   name                            = "vm-spoke2-${var.environment}"
@@ -93,7 +93,7 @@ resource "azurerm_linux_virtual_machine" "spoke2" {
 }
 
 # -----------------------------------------------------------------------------
-# Network Watcher Agent Extension — Spoke 1 VM
+# Network Watcher Agent Extension - Spoke 1 VM
 # -----------------------------------------------------------------------------
 resource "azurerm_virtual_machine_extension" "spoke1_network_watcher" {
   name                       = "NetworkWatcherAgentLinux"
@@ -106,7 +106,7 @@ resource "azurerm_virtual_machine_extension" "spoke1_network_watcher" {
 }
 
 # -----------------------------------------------------------------------------
-# Network Watcher Agent Extension — Spoke 2 VM
+# Network Watcher Agent Extension - Spoke 2 VM
 # -----------------------------------------------------------------------------
 resource "azurerm_virtual_machine_extension" "spoke2_network_watcher" {
   name                       = "NetworkWatcherAgentLinux"

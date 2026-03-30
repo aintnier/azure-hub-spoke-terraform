@@ -40,7 +40,7 @@ variable "virtual_hub_address_prefix" {
 }
 
 # -----------------------------------------------------------------------------
-# Networking — Spokes and Bastion VNet
+# Networking - Spokes and Bastion VNet
 # -----------------------------------------------------------------------------
 variable "spoke1_vnet_address_space" {
   description = "Address space for Spoke 1 VNet"
@@ -79,7 +79,7 @@ variable "bastion_subnet_prefix" {
 }
 
 # -----------------------------------------------------------------------------
-# Compute — Test VMs
+# Compute - Test VMs
 # -----------------------------------------------------------------------------
 variable "vm_size" {
   description = "Size of the test virtual machines"

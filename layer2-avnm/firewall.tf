@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Azure Firewall — Public IP
+# Azure Firewall - Public IP
 # -----------------------------------------------------------------------------
 resource "azurerm_public_ip" "firewall" {
   name                = "pip-fw-hub-${var.environment}"
